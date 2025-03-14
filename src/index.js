@@ -2,16 +2,15 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
-// middleware
+// MIDDLEWARE
 app.use((req, res, next) => {
-  const now = Date.now();
-  req.requestTime = now;
+  const calculation = 4 * 7;
+  req.calculatedValue = calculation;
   next();
 });
 
-// data sent to the user
 app.get("/", (req, res) => {
-  res.send(req.requestTime.toString());
+  res.send(`The calculated value is: ${req.calculatedValue}`);
 });
 
 app.get("/", (req, res) => {
