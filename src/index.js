@@ -5,6 +5,7 @@ const userRoutes = require("./routes/users")
 const { hashPassword } = require("./middleware/password-encrypt")
 const requestLogger = require('./middleware/logger');
 const connectDB = require("./utils/db");
+const productRoutes = require("./routes/products");
 
 // MIDDLEWARE
 app.use(express.json());
@@ -30,6 +31,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/users", userRoutes);
+app.use("/api/products", productRoutes);
 app.use(requestLogger);
 
 app.listen(port, () => {
