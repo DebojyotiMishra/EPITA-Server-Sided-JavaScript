@@ -6,8 +6,10 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  res.send("User's Page Post Request!");
-}
-);
+  console.log('POST request received');
+  console.log('Request body:', req.body);
+  const { firstName, lastName, password } = req.body;
+  res.send(`User ${firstName} ${lastName} created! Your password is ${password}`);
+});
 
 module.exports = router;
