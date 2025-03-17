@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="">
+        <label for="name"></label>
+        <input type="text" name="name" id="name" placeholder="Enter your name">
+        <button type="submit" aria-pressed="false">Submit</button>
+    </form>
+    <script>
+        const form = document.querySelector('form');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.querySelector('#name').value;
+
+            const remoteUrl = 'http://localhost:3000/api/users';
+            const localUrl = 'http://localhost:3000/api/users';
+
+            const response = await fetch(localUrl, {
+                method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ firstName: name })
+                });
+    
+                const data = await response.json();
+                console.log(data);
+            });
+    </script>
+</body>
+</html>
