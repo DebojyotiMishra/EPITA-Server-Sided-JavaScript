@@ -1,16 +1,19 @@
 const mongoose = require("mongoose");
-
-const mongoConnection = "mongodb://127.0.0.1:27017";
-
-mongoose.set("strictQuery", true);
+require("dotenv").config();
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(mongoConnection);
-    console.log("Connected to MongoDB");
-  } catch (error) {
-    console.error("No DB connection!", error);
-    process.exit(1); // Exit process with failure
+    const uri = process.env.MONGODB_URI;
+    if (!uri) {
+      throw new Error("MONGODB_URI is not defined in environment variables");
+    }
+
+    await mongoose.connect(uri);
+    console.log("MongoDB Connected...");
+  } catch (err) {
+    console.error("No DB connection!", err.message);
+    // Exit process with failure
+    process.exit(1);
   }
 };
 
