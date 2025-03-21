@@ -1,10 +1,14 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  username: {
+  firstName: {
     type: String,
     required: true,
-    unique: true,
+    trim: true
+  },
+  lastName: {
+    type: String,
+    required: true,
     trim: true
   },
   email: {
@@ -17,6 +21,19 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user'
+  },
+  imageUrl: {
+    type: String,
+    default: ''
+  },
+  inventory: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product'
+  }],
   createdAt: {
     type: Date,
     default: Date.now

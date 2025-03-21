@@ -1,21 +1,45 @@
 const User = require("../models/User");
 const { hashPassword } = require("../middleware/password-encrypt");
 
+exports.userSignUp = async (req, res) => {
+  const { firstName, lastName, email, password, role, imageUrl } = req.body;
+  const hashedPassword = req.hashedPassword;
+  const newUser = new User({
+    firstName,
+    lastName,
+    email,
+    password: hashedPassword,
+    role,
+    imageUrl,
+    inventory: [],
+  });
+
+  try {
+    const savedUser = await newUser.save();
+    res.status(201).json(savedUser);
+  }
+  catch (err) {
+    res.status(400).json({ message: err });
+  }
+};
+
 exports.createUser = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { firstName, lastName, email, password, role, imageUrl } = req.body;
     
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    const hashedPassword = await hashPassword(password);
-
     const user = new User({
-      username,
+      firstName,
+      lastName,
       email,
-      password: hashedPassword
+      password: req.hashedPassword,
+      role,
+      imageUrl,
+      inventory: []
     });
 
     await user.save();
@@ -24,12 +48,3 @@ exports.createUser = async (req, res) => {
     res.status(500).json({ message: "Error creating user", error: error.message });
   }
 };
-
-exports.getUsers = async (req, res) => {
-  try {
-    const users = await User.find().select("-password");
-    res.status(200).json(users);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching users", error: error.message });
-  }
-}; 
