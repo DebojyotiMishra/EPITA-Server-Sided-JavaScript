@@ -6,6 +6,10 @@ const {
   getInvoiceById,
   updateInvoiceStatus
 } = require("../controllers/invoiceController");
+const auth = require('../middleware/auth');
+
+// Protect all invoice routes
+router.use(auth);
 
 router.post("/", createInvoice);
 router.get("/", getInvoices);
