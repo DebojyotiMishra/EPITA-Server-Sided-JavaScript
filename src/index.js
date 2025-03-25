@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const port = 3000;
@@ -8,7 +9,6 @@ const connectDB = require("./utils/db");
 const productRoutes = require("./routes/products");
 const invoiceRoutes = require("./routes/invoices");
 const cors = require('cors');
-require('dotenv').config();
 
 // MIDDLEWARE
 app.use(express.json());
