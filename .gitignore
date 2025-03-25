@@ -4,3 +4,4 @@ src/node_modules
 .env.test
 .env.production
 src/.env
+src/.env.development.local
