@@ -25,6 +25,9 @@ app.use((req, res, next) => {
 
 app.use(express.static('src/public'));
 
+// Serve static files from uploads directory
+app.use('/uploads', express.static('src/uploads'));
+
 // Connect to database
 connectDB();
 

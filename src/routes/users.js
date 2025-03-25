@@ -7,6 +7,7 @@ const { userSignUp, createUser, userLogin } = require("../controllers/userContro
 const { hashPassword } = require("../middleware/password-encrypt");
 const User = require("../models/User");
 const auth = require("../middleware/auth");
+const upload = require("../middleware/multerConfig");
 
 // Public routes
 router.post("/signup", hashPassword, userSignUp);
@@ -31,6 +32,24 @@ router.get("/me", auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
     res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.put("/userUpdate", auth, upload.single('image'), async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (req.file) {
+      user.imageUrl = `/uploads/${req.file.filename}`;
+    }
+
+    await user.save();
+    res.json({ message: "User updated", user });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

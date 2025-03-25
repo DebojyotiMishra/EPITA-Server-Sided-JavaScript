@@ -3,3 +3,5 @@ src/.env
 src/.env.development.local
 src/.env.production.local
 src/package-lock.json
+src/uploads/*
+!src/uploads/.gitkeep
