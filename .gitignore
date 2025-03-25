@@ -1,7 +1,5 @@
-.trunk
-src/node_modules
+node_modules/
 .env
-.env.test
-.env.production
-src/.env
-src/.env.development.local
+.env.development.local
+.env.production.local
+package-lock.json
