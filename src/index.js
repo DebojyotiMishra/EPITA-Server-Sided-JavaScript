@@ -7,6 +7,8 @@ const requestLogger = require('./middleware/logger');
 const connectDB = require("./utils/db");
 const productRoutes = require("./routes/products");
 const invoiceRoutes = require("./routes/invoices");
+const cors = require('cors');
+require('dotenv').config();
 
 // MIDDLEWARE
 app.use(express.json());
