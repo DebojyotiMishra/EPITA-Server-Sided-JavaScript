@@ -1,5 +1,5 @@
-node_modules/
-.env
-.env.development.local
-.env.production.local
-package-lock.json
+src/node_modules/
+src/.env
+src/.env.development.local
+src/.env.production.local
+src/package-lock.json
