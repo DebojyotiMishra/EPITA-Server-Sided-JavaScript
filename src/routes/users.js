@@ -42,50 +42,34 @@ router.get("/me", auth, async (req, res) => {
   }
 });
 
-router.put(
-  "/userUpdate",
-  auth,
-  upload.single("image"),
-  sharpMiddleware(),
-  async (req, res) => {
-    try {
-      const user = await User.findById(req.user.id);
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-
-      // Enhanced debugging
-      console.log("Headers:", req.headers);
-      console.log("Content-Type:", req.headers["content-type"]);
-      console.log("Body:", req.body);
-      console.log("Files:", req.files);
-      console.log("File:", req.file);
-      console.log("Error:", req.fileValidationError);
-
-      if (!req.file) {
-        return res.status(400).json({
-          error: "Error uploading the file. Wrong format?",
-          validationError: req.fileValidationError,
-        });
-      }
-
-      const fileUrl = `${req.protocol}://${req.get("host")}/uploads/${
-        req.file.filename
-      }`;
-
-      user.imageUrl = fileUrl;
-      await user.save();
-
-      res.json({
-        message: "User updated successfully",
-        user,
-        fileUrl,
-      });
-    } catch (error) {
-      console.error("Error in userUpdate:", error);
-      res.status(500).json({ message: error.message });
+router.put("/userUpdate", auth, upload.single("image"), sharpMiddleware(), async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
+
+    console.log('Request file after processing:', req.file);
+
+    if (!req.file) {
+      return res.status(400).json({ error: "Error uploading the file. Wrong format?" });
+    }
+
+    const fileUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+    console.log('File URL:', fileUrl);
+
+    user.imageUrl = fileUrl;
+    await user.save();
+
+    res.json({
+      message: "User updated successfully",
+      user,
+      fileUrl
+    });
+  } catch (error) {
+    console.error('Error in userUpdate:', error);
+    res.status(500).json({ message: error.message });
   }
-);
+});
 
 module.exports = router;
