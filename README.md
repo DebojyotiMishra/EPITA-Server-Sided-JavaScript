@@ -2,6 +2,12 @@
 
 This is a RESTful API for an e-commerce platform built with Node.js, Express, and MongoDB. The API provides endpoints for user authentication, product management, invoice generation, and image upload functionality.
 
+## 🌍 Live API
+
+The backend API is hosted on Render. You can access it here:
+
+**[API Base URL](https://epita-server-sided-javascript.onrender.com)**
+
 ## Project UML Diagram
 ![UML Diagram](ProjectUML.svg)
 
