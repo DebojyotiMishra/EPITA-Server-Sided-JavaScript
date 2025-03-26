@@ -11,19 +11,20 @@ const fs = require("fs");
 const sharpMiddleware = (outputFormat = "webp", quality = 80) => {
   return async (req, res, next) => {
     if (!req.file) {
-      return next(); // Skip if no file is uploaded
+      return next();
     }
     try {
-      const inputPath = req.file.path; // Temporary file path from Multer
-      const filename = path.parse(req.file.filename).name; // Get filename without extension
-      const outputPath = path.join(
-        "src/uploads",
-        `${filename}.${outputFormat}`
-      );
+      const inputPath = req.file.path;
+      const filename = path.parse(req.file.filename).name;
+      const outputDir = path.join(__dirname, "../../uploads");
 
-      // Process the image
+      // Ensure directory exists
+      fs.mkdirSync(outputDir, { recursive: true });
+
+      const outputPath = path.join(outputDir, `${filename}.${outputFormat}`);
+
       await sharp(inputPath)
-        .resize(800) // Resize to max width of 800px (maintains aspect ratio)
+        .resize(800)
         .toFormat(outputFormat, { quality })
         .toFile(outputPath);
 
@@ -37,13 +38,17 @@ const sharpMiddleware = (outputFormat = "webp", quality = 80) => {
 
       next();
     } catch (error) {
-      // If something goes wrong, delete the temporary file
+      console.error("Sharp middleware error:", error);
       if (req.file && req.file.path) {
-        fs.unlinkSync(req.file.path);
+        try {
+          fs.unlinkSync(req.file.path);
+        } catch (unlinkError) {
+          console.error("Error deleting file:", unlinkError);
+        }
       }
       next(error);
     }
   };
 };
 
-module.exports = sharpMiddleware; 
+module.exports = sharpMiddleware;

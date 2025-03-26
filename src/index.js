@@ -1,5 +1,7 @@
 require('dotenv').config();
 const express = require("express");
+const path = require("path");
+const fs = require("fs");
 const app = express();
 const port = 3000;
 const userRoutes = require("./routes/users")
@@ -12,21 +14,15 @@ const cors = require('cors');
 
 // MIDDLEWARE
 app.use(express.json());
+app.use(cors());
 
-// cors middleware
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*")
-  res.header(
-   "Access-Control-Allow-Headers",
-   "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  )
-  next()
-});
+// Ensure uploads directory exists
+const uploadsPath = path.join(__dirname, '../uploads');
+fs.mkdirSync(uploadsPath, { recursive: true });
 
+// Serve static files
 app.use(express.static('src/public'));
-
-// Serve static files from uploads directory
-app.use('/uploads', express.static('src/uploads'));
+app.use('/uploads', express.static(uploadsPath));
 
 // Connect to database
 connectDB();
