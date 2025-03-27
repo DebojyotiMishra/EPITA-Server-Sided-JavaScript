@@ -16,11 +16,19 @@
     "sharp": "^0.33.5"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "chai": "^4.3.7",
+    "chai-http": "^4.3.0",
+    "mocha": "^10.2.0",
+    "mongodb-memory-server": "^8.12.2",
+    "nodemon": "^3.1.9",
+    "sinon": "^15.0.3",
+    "supertest": "^6.3.3"
   },
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build": "npm install --legacy-peer-deps"
+    "build": "npm install --legacy-peer-deps",
+    "test": "mocha --timeout 10000 tests/**/*.test.js",
+    "test:watch": "mocha --watch tests/**/*.test.js"
   }
 }
