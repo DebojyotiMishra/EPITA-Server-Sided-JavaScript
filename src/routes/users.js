@@ -14,14 +14,14 @@ const auth = require("../middleware/auth");
 const upload = require("../middleware/multerConfig");
 const sharpMiddleware = require("../middleware/sharpMiddleware");
 
-// Public routes
+// Public routes (no auth needed)
 router.post("/signup", hashPassword, userSignUp);
 router.post("/login", userLogin);
 router.get("/form", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/index.html"));
 });
 
-// Protected routes
+// Protected routes (auth required)
 router.get("/", auth, async (req, res) => {
   try {
     const users = await User.find();

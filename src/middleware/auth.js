@@ -21,9 +21,3 @@ const auth = async (req, res, next) => {
 };
 
 module.exports = auth;
-
-exports.verifyToken = (req, res, next) => {
-  const token = req.header.authorization.split(' ')[1];
-  next()
-  console.log(token)
-}
